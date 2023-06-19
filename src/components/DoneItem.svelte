@@ -3,6 +3,7 @@
   import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
   import { dones } from "./store";
+  import { send, receive } from "./animation";
 
   export let doneitem: {
     id: number;
@@ -15,6 +16,8 @@
 </script>
 
 <label
+  in:receive={{ key: doneitem.id }}
+  out:send={{ key: doneitem.id }}
   class="relative mx-auto mb-4 flex w-[56%] justify-between border-2 border-red-500 bg-red-300 px-4 py-2 text-xl hover:bg-red-400"
 >
   <div class="flex items-center justify-center">
