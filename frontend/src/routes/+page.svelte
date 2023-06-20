@@ -1,17 +1,36 @@
 <script lang="ts">
   import { Input } from "postcss";
   import { DarkMode } from "flowbite-svelte";
+  import { onMount } from "svelte";
 
+  import fetchData from "^/fetctData";
   import TodoItem from "~/TodoItem.svelte";
   import DoneItem from "~/DoneItem.svelte";
-  import { todos, todoId, dones } from "~/store";
+  import { todos, dones } from "../components/store";
+
+  async function refreshData() {
+    const { todoData, doneData } = await fetchData();
+    $todos = todoData.todos;
+    $dones = doneData.dones;
+  }
+
+  export function add(todo: string) {
+    fetch("http://localhost:8080/todo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ subject: todo }),
+    }).then(async () => {
+      await refreshData();
+    });
+  }
 
   let addTodoItem: string = "";
 
-  function add(todo: string) {
-    $todos = [...$todos, { id: $todoId, desc: todo }];
-    $todoId += 1;
-  }
+  onMount(async () => {
+    await refreshData();
+  });
 </script>
 
 <div class="text-center">
@@ -36,11 +55,19 @@
     />
   </div>
   <div>
-    {#each $todos as todo}
-      <TodoItem {todo} />
-    {/each}
-    {#each $dones as doneitem}
-      <DoneItem {doneitem} />
-    {/each}
+    {#if $todos === null}
+      <p>Loading...</p>
+    {:else}
+      {#each $todos as todo}
+        <TodoItem {todo} />
+      {/each}
+    {/if}
+    {#if $dones === null}
+      <p>Loading...</p>
+    {:else}
+      {#each $dones as done}
+        <DoneItem {done} />
+      {/each}
+    {/if}
   </div>
 </div>
