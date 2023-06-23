@@ -5,8 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    # image: mainekwok97/svelte-todo-api
-    image: svelte-todo-api
+    image: mainekwok97/svelte-todo-api
     ports:
       - "8080:8080"
 
@@ -14,7 +13,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    # image: mainekwok97/svelte-todo-frontend
-    image: svelte-todo-frontend
+    image: mainekwok97/svelte-todo-frontend
     ports:
       - "3000:3000"
