@@ -1,0 +1,20 @@
+version: "3.9"
+name: todo-list
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    # image: mainekwok97/svelte-todo-api
+    image: svelte-todo-api
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    # image: mainekwok97/svelte-todo-frontend
+    image: svelte-todo-frontend
+    ports:
+      - "3000:3000"
