@@ -36,7 +36,7 @@ func PostTodo(c *gin.Context) {
 func GetAllTodos(c *gin.Context) {
 	// Get the todos
 	var todos []models.Todo
-	results := initializers.DB.Find(&todos)
+	results := initializers.DB.Order("id asc").Find(&todos)
 
 	if results.Error != nil {
 		// Handle the error
