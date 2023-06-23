@@ -9,7 +9,7 @@
 docker-compose up
 ```
 
-Open [http://localhost:](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Todo List Page
 
