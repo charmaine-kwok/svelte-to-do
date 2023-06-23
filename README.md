@@ -1,4 +1,14 @@
-# Todo List using Svelte
+# Svelte To-Do App
+
+This is a simple To-Do application built using [Svelte](https://svelte.dev) for the frontend and [Go](https://go.dev) for the backend. The app allows users to add, edit, and delete to-do items, as well as mark them as done.
+
+## Features
+
+- Add new to-do items
+- Edit existing to-do items
+- Delete to-do items
+- Mark to-do items as done
+- Delete done items
 
 ## Getting Started
 
