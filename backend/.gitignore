@@ -7,8 +7,8 @@
 # Unignore all dirs
 !*/
 
-!Dockerfile
-
 ### Above combination will ignore all files without extension ###
+
+!Dockerfile
 
 .env

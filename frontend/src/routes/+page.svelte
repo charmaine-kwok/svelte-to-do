@@ -6,7 +6,7 @@
   import fetchData from "^/fetctData";
   import TodoItem from "~/TodoItem.svelte";
   import DoneItem from "~/DoneItem.svelte";
-  import { todos, dones } from "../components/store";
+  import { todos, dones } from "~/store";
 
   async function refreshData() {
     const { todoData, doneData } = await fetchData();

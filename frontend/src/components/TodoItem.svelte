@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { faTrash } from "@fortawesome/free-solid-svg-icons";
+  import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa";
 
   import { send, receive } from "./animation";
@@ -10,6 +10,8 @@
     ID: number;
     subject: string;
   };
+
+  let isEditing = false;
 
   async function refreshData() {
     const { todoData, doneData } = await fetchData();
@@ -25,7 +27,19 @@
     });
   }
 
-  export function addDoneItem(id: number, todo: string) {
+  function updatetodo(id: number, todo: string) {
+    fetch(`http://localhost:8080/todo/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ subject: todo }),
+    }).then(async () => {
+      await refreshData();
+    });
+  }
+
+  function addDoneItem(id: number, todo: string) {
     removetodo(id);
     fetch("http://localhost:8080/done", {
       method: "POST",
@@ -42,13 +56,35 @@
 <label
   in:receive={{ key: todo.ID }}
   out:send={{ key: todo.ID }}
-  class=" relative mx-auto mb-4 flex w-[56%] justify-between border-2 border-green-500 bg-green-300 px-4 py-2 text-xl hover:bg-green-400"
+  class=" relative mx-auto mb-4 flex h-[3rem] w-[56%] justify-between border-2 border-green-500 bg-green-300 px-4 py-2 text-xl hover:bg-green-400"
 >
-  <div class="flex items-center justify-center">
-    <div>{todo.subject}</div>
+  <div class="flex w-full items-center justify-start">
+    {#if isEditing}
+      <input
+        type="text"
+        bind:value={todo.subject}
+        class="h-[2.5rem] w-[90%]"
+        on:keyup={(event) => {
+          if (event.key === "Enter") {
+            isEditing = false;
+            updatetodo(todo.ID, todo.subject);
+          }
+        }}
+      />
+    {:else}
+      <div>{todo.subject}</div>
+    {/if}
   </div>
 
-  <div class="flex flex-row space-x-4">
+  <div class="flex flex-row items-center justify-center space-x-4">
+    <button
+      on:click={() => {
+        isEditing = !isEditing;
+      }}
+    >
+      <Fa icon={faPenToSquare} />
+    </button>
+
     <button
       type="button"
       class="flex items-center space-x-2 border border-black bg-orange-300 px-3"
@@ -66,14 +102,13 @@
       </svg>
       <span class="text-base">DONE</span>
     </button>
+
     <button
       on:click={() => {
         removetodo(todo.ID);
       }}
     >
-      <div class="flex items-center">
-        <Fa icon={faTrash} />
-      </div>
+      <Fa icon={faTrash} />
     </button>
   </div>
 </label>
