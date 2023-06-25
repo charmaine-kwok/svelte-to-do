@@ -1,18 +1,19 @@
 <script lang="ts">
   import { Input } from "postcss";
-  import { DarkMode } from "flowbite-svelte";
+  import { DarkMode, Select, Label } from "flowbite-svelte";
   import { onMount } from "svelte";
-  import Select from "svelte-select";
 
   import fetchData from "^/fetctData";
   import TodoItem from "~/TodoItem.svelte";
   import DoneItem from "~/DoneItem.svelte";
   import { todos, dones } from "~/store";
 
+  let selected: string = "all";
+
   let options = [
-    { value: "all", label: "All" },
-    { value: "done", label: "Done" },
-    { value: "todo", label: "Todo" },
+    { value: "all", name: "All" },
+    { value: "done", name: "Done" },
+    { value: "todo", name: "Todo" },
   ];
 
   let selectedFilter = "all";
@@ -65,27 +66,28 @@
   </div>
 
   <div class="flex items-center justify-center">
-    <div class="my-4 flex w-[56%] items-center justify-start">
+    <div class="my-4 flex w-[56%] items-center justify-start text-start">
       <div class="w-[25%]">
-        <Select
-          items={options}
-          placeholder="Filter"
-          value={selectedFilter}
-          on:change={({ detail }) => {
-            selectedFilter = detail.value;
-          }}
-        />
+        <Label
+          >Filter
+          <Select
+            class="mt-2"
+            items={options}
+            bind:value={selected}
+            placeholder="Select Filter..."
+          />
+        </Label>
       </div>
     </div>
   </div>
 
   <div>
-    {#if selectedFilter === "all" || selectedFilter === "todo"}
+    {#if selected === "all" || selected === "todo"}
       {#each $todos as todo}
         <TodoItem {todo} />
       {/each}
     {/if}
-    {#if selectedFilter === "all" || selectedFilter === "done"}
+    {#if selected === "all" || selected === "done"}
       {#each $dones as done}
         <DoneItem {done} />
       {/each}
