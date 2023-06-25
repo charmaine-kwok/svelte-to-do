@@ -2,11 +2,20 @@
   import { Input } from "postcss";
   import { DarkMode } from "flowbite-svelte";
   import { onMount } from "svelte";
+  import Select from "svelte-select";
 
   import fetchData from "^/fetctData";
   import TodoItem from "~/TodoItem.svelte";
   import DoneItem from "~/DoneItem.svelte";
   import { todos, dones } from "~/store";
+
+  let options = [
+    { value: "all", label: "All" },
+    { value: "done", label: "Done" },
+    { value: "todo", label: "Todo" },
+  ];
+
+  let selectedFilter = "all";
 
   async function refreshData() {
     const { todoData, doneData } = await fetchData();
@@ -40,7 +49,7 @@
     </h1>
     <DarkMode class="float-left text-2xl" />
   </div>
-  <div class="mx-auto mb-8 w-[70%] rounded-md bg-slate-300 dark:bg-slate-700">
+  <div class="mx-auto w-[70%] rounded-md bg-slate-300 dark:bg-slate-700">
     <input
       on:keyup={(event) => {
         if (event.key === "Enter") {
@@ -54,17 +63,29 @@
       class="my-8 w-[80%] border-white py-2 pl-2 text-xl dark:border-white"
     />
   </div>
+
+  <div class="flex items-center justify-center">
+    <div class="my-4 flex w-[56%] items-center justify-start">
+      <div class="w-[25%]">
+        <Select
+          items={options}
+          placeholder="Filter"
+          value={selectedFilter}
+          on:change={({ detail }) => {
+            selectedFilter = detail.value;
+          }}
+        />
+      </div>
+    </div>
+  </div>
+
   <div>
-    {#if $todos === null}
-      <p>Loading...</p>
-    {:else}
+    {#if selectedFilter === "all" || selectedFilter === "todo"}
       {#each $todos as todo}
         <TodoItem {todo} />
       {/each}
     {/if}
-    {#if $dones === null}
-      <p>Loading...</p>
-    {:else}
+    {#if selectedFilter === "all" || selectedFilter === "done"}
       {#each $dones as done}
         <DoneItem {done} />
       {/each}

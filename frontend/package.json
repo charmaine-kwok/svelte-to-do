@@ -34,6 +34,7 @@
     "flowbite": "^1.6.5",
     "flowbite-svelte": "^0.37.5",
     "svelte-fa": "^3.0.4",
-    "svelte-icons-pack": "^2.1.0"
+    "svelte-icons-pack": "^2.1.0",
+    "svelte-select": "^5.6.1"
   }
 }
