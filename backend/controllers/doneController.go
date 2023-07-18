@@ -37,7 +37,7 @@ func GetAllDones(c *gin.Context) {
 
 	// Get the todos
 	var dones []models.Done
-	results := initializers.DB.Find(&dones)
+	results := initializers.DB.Order("id asc").Find(&dones)
 
 	if results.Error != nil {
 		// Handle the error
