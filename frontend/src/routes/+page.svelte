@@ -53,7 +53,7 @@
   <div class="mx-auto w-[70%] rounded-md bg-slate-300 dark:bg-slate-700">
     <input
       on:keyup={(event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && addTodoItem) {
           add(addTodoItem);
           addTodoItem = "";
         }
