@@ -71,7 +71,7 @@
         <Label
           >Filter
           <Select
-            class="mt-2"
+            class="mt-2 w-[100px]"
             items={options}
             bind:value={selected}
             placeholder="Select Filter..."
